@@ -1,0 +1,7 @@
+Infraestructura
+Aplicaciones
+Redes
+Seguridad
+Soporte Técnico
+DevOps
+Base de Datos
