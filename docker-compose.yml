@@ -8,10 +8,10 @@ services:
       MYSQL_DATABASE: ${HESK_DB_NAME}
       MYSQL_USER: ${HESK_DB_USER}
       MYSQL_PASSWORD: ${HESK_DB_PASSWORD}
-    ports:
-      - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - internal-net
 
   hesk-web:
     build:
@@ -25,17 +25,76 @@ services:
       - "8080:80"
     volumes:
       - ./hesk:/var/www/html
+    networks:
+      - internal-net
+
+  zabbix-db:
+    image: mysql:8
+    container_name: zabbix-db
+    restart: always
+    command:
+      - --log-bin-trust-function-creators=1
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${ZABBIX_DB_NAME}
+      MYSQL_USER: ${ZABBIX_DB_USER}
+      MYSQL_PASSWORD: ${ZABBIX_DB_PASSWORD}
+    volumes:
+      - zabbix_db_data:/var/lib/mysql
+    networks:
+      - internal-net
+
+  zabbix-server:
+    image: zabbix/zabbix-server-mysql:latest
+    container_name: zabbix-server
+    restart: always
+    depends_on:
+      - zabbix-db
+    environment:
+      DB_SERVER_HOST: zabbix-db
+      MYSQL_DATABASE: ${ZABBIX_DB_NAME}
+      MYSQL_USER: ${ZABBIX_DB_USER}
+      MYSQL_PASSWORD: ${ZABBIX_DB_PASSWORD}
+    ports:
+      - "10051:10051"
+    networks:
+      - internal-net
+
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-mysql:latest
+    container_name: zabbix-web
+    restart: always
+    depends_on:
+      - zabbix-server
+      - zabbix-db
+    environment:
+      DB_SERVER_HOST: zabbix-db
+      MYSQL_DATABASE: ${ZABBIX_DB_NAME}
+      MYSQL_USER: ${ZABBIX_DB_USER}
+      MYSQL_PASSWORD: ${ZABBIX_DB_PASSWORD}
+      ZBX_SERVER_HOST: zabbix-server
+      PHP_TZ: America/Argentina/Buenos_Aires
+    ports:
+      - "8081:8080"
+    networks:
+      - internal-net
+
+  zabbix-agent:
+    image: zabbix/zabbix-agent2:latest
+    container_name: zabbix-agent
+    restart: always
+    environment:
+      ZBX_SERVER_HOST: zabbix-server
+    networks:
+      - internal-net
 
 volumes:
   db_data:
+  zabbix_db_data:
 
-
-
-
-
-
-
-
+networks:
+  internal-net:
+    driver: bridge
 
 
 
@@ -46,14 +105,14 @@ volumes:
 #     container_name: hesk-db
 #     restart: always
 #     environment:
-#       MYSQL_ROOT_PASSWORD: root
-#       MYSQL_DATABASE: hesk_db
-#       MYSQL_USER: hesk_user
-#       MYSQL_PASSWORD: hesk_pass
-#     ports:
-#       - "3306:3306"
+#       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+#       MYSQL_DATABASE: ${HESK_DB_NAME}
+#       MYSQL_USER: ${HESK_DB_USER}
+#       MYSQL_PASSWORD: ${HESK_DB_PASSWORD}
 #     volumes:
 #       - db_data:/var/lib/mysql
+#     networks:
+#       - internal-net
 
 #   hesk-web:
 #     build:
@@ -67,73 +126,14 @@ volumes:
 #       - "8080:80"
 #     volumes:
 #       - ./hesk:/var/www/html
+#     networks:
+#       - internal-net
 
 # volumes:
 #   db_data:
 
+# networks:
+#   internal-net:
+#     driver: bridge
 
 
-
-
-
-
-
-# services:
-#   db:
-#     image: mysql:8
-#     container_name: hesk-db
-#     restart: always
-#     environment:
-#       MYSQL_ROOT_PASSWORD: root
-#       MYSQL_DATABASE: hesk_db
-#       MYSQL_USER: hesk_user
-#       MYSQL_PASSWORD: hesk_pass
-#     ports:
-#       - "3306:3306"
-#     volumes:
-#       - db_data:/var/lib/mysql
-
-#   hesk-web:
-#     image: php:8.2-apache
-#     container_name: hesk-web
-#     restart: always
-#     depends_on:
-#       - db
-#     ports:
-#       - "8080:80"
-#     volumes:
-#       - ./hesk:/var/www/html
-
-# volumes:
-#   db_data:
-
-
-
-
-
-
-
-
-
-
-# services:
-#   db:
-#     image: mysql:8
-#     container_name: hesk-db
-#     restart: always
-#     environment:
-#       MYSQL_ROOT_PASSWORD: root
-#       MYSQL_DATABASE: hesk_db
-#       MYSQL_USER: hesk_user
-#       MYSQL_PASSWORD: hesk_pass
-#     ports:
-#       - "3306:3306"
-#     volumes:
-#       - db_data:/var/lib/mysql
-
-# volumes:
-#   db_data:
-
-
-
-  

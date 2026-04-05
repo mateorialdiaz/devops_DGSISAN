@@ -103,8 +103,8 @@ $hesk_settings['recaptcha_use']=0;
 $hesk_settings['recaptcha_public_key']='';
 $hesk_settings['recaptcha_private_key']='';
 $hesk_settings['question_use']=0;
-$hesk_settings['question_ask']='Type <i>RXJZW</i> here to fight SPAM:';
-$hesk_settings['question_ans']='RXJZW';
+$hesk_settings['question_ask']='Solve this equation to show you are human: 2 + 3 = ';
+$hesk_settings['question_ans']='4';
 
 // --> Security
 $hesk_settings['attempt_limit']=6;
@@ -115,7 +115,7 @@ $hesk_settings['email_view_ticket']=1;
 $hesk_settings['x_frame_opt']=1;
 $hesk_settings['samesite']='Lax';
 $hesk_settings['force_ssl']=0;
-$hesk_settings['url_key']='cGKvGxDMr65XdU6HdrabwpY';
+$hesk_settings['url_key']='zU.BGQTK3N9jN9KQYrrhj';
 $hesk_settings['require_mfa']=0;
 $hesk_settings['require_mfa_customers']=0;
 $hesk_settings['elevator_duration']='60M';
