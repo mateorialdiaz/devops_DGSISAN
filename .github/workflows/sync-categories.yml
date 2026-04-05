@@ -1,0 +1,33 @@
+name: Sync HESK Categories
+
+on:
+  push:
+    paths:
+      - 'categories.txt'
+      - 'scripts/sync_categories.py'
+      - '.github/workflows/sync-categories.yml'
+
+jobs:
+  sync:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pymysql
+
+      - name: Run sync script
+        env:
+          HESK_DB_HOST: 127.0.0.1
+          HESK_DB_PORT: 3306
+          HESK_DB_NAME: hesk_db
+          HESK_DB_USER: root
+          HESK_DB_PASSWORD: ${{ secrets.HESK_DB_PASSWORD }}
+        run: python scripts/sync_categories.py

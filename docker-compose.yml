@@ -8,6 +8,8 @@ services:
       MYSQL_DATABASE: ${HESK_DB_NAME}
       MYSQL_USER: ${HESK_DB_USER}
       MYSQL_PASSWORD: ${HESK_DB_PASSWORD}
+    ports:
+      - "3306:3306"  
     volumes:
       - db_data:/var/lib/mysql
     networks:
