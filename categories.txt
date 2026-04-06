@@ -5,5 +5,3 @@ Seguridad
 Soporte Técnico
 DevOps
 Base de Datos
-Base de Datos
-Direccion General de SI
