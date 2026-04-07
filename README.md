@@ -19,7 +19,7 @@ El stack está compuesto por los siguientes servicios:
 - zabbix-db: base de datos de Zabbix  
 - zabbix-server: backend de monitoreo  
 - zabbix-web: interfaz web de Zabbix  
-- zabbix-agent: agente de monitoreo  
+
 
 Todos los servicios se comunican a través de una red Docker interna (internal-net).
 
