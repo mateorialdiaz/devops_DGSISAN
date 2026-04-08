@@ -11,3 +11,7 @@ Redes
 Desarrollo de Software
 Auditoria
 Innovación Tecnológica
+Arquitectura de Software
+CI/CD
+Calidad de Software
+
