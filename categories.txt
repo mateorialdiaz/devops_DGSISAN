@@ -7,7 +7,6 @@ DevOps
 Base de Datos
 Dirección General
 DevOps
-Redes
 Desarrollo de Software
 Auditoria
 Innovación Tecnológica
