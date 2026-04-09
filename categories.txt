@@ -16,3 +16,5 @@ CI/CD
 Calidad de Software
 Calidad de Software
 Incidentes
+Telefonía
+Redes
